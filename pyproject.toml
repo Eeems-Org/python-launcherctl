@@ -2,7 +2,7 @@
 name = "launcherctl"
 description = "Python wrapper around launcherctl."
 readme = "README.md"
-version = "0.0.1"
+version = "1.0.0"
 requires-python = ">= 3.11"
 authors = [
     {name = "Nathaniel van Diepen", email = "eeems@eeems.email"},
