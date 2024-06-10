@@ -4,7 +4,6 @@ from typing import Callable
 
 from ._app import App
 from ._util import launcherctl
-from ._util import LauncherCtlException
 
 
 class Launcher:
