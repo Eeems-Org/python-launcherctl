@@ -28,7 +28,7 @@ class App:
 
 class API:
     def keys(self) -> list[str]:
-        return [x for x in launcherctl("list-apps").splitlines()]
+        return launcherctl("list-apps").splitlines()
 
     def __contains__(self, key: str) -> bool:
         return key in self.keys()
@@ -41,16 +41,11 @@ class API:
 
     @property
     def running(self) -> dict[str, App]:
-        return {
-            x: App(x)
-            for x in [x for x in launcherctl("list-running-apps").splitlines()]
-        }
+        return {x: App(x) for x in launcherctl("list-running-apps").splitlines()}
 
     @property
     def paused(self) -> dict[str, App]:
-        return {
-            x: App(x) for x in [x for x in launcherctl("list-paused-apps").splitlines()]
-        }
+        return {x: App(x) for x in launcherctl("list-paused-apps").splitlines()}
 
 
 api = API()

@@ -6,8 +6,10 @@ class LauncherCtlException(Exception):
 
 
 def launcherctl(*args: str) -> str:
-    try:
-        return subprocess.check_output(["/opt/bin/launcherctl", *args], text=True)
+    proc = subprocess.run(
+        ["/opt/bin/launcherctl", *args], text=True, check=False, capture_output=True
+    )
+    if not proc.returncode:
+        return proc.stdout
 
-    except subprocess.CalledProcessError as e:
-        raise LauncherCtlException(f"{e.stdout}\n{e.stderr}") from e  # pyright: ignore[reportAny]
+    raise LauncherCtlException(f"{proc.stdout}\n{proc.stderr}")

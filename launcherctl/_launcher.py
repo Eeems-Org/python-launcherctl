@@ -48,7 +48,7 @@ class Launcher:
 
 class API:
     def keys(self) -> list[str]:
-        return [x for x in launcherctl("list-launchers").splitlines()]
+        return launcherctl("list-launchers").splitlines()
 
     def __contains__(self, key: str) -> bool:
         return key in self.keys()
