@@ -15,11 +15,6 @@ pip install --force-reinstall /tmp/launcherctl-${VERSION}-py3-none-any.whl
 endef
 export SCRIPT
 
-ifeq ($(VENV_BIN_ACTIVATE),)
-VENV_BIN_ACTIVATE := .venv/bin/activate
-endif
-
-
 dist/launcherctl-${VERSION}.tar.gz: $(shell find launcherctl -type f)
 	python -m build --sdist
 
@@ -39,11 +34,5 @@ test: install
 	cat test.py \
 	| ssh root@10.11.99.1 \
 	  "bash -ec 'PATH=${PATH} /opt/bin/python -u'"
-
-$(VENV_BIN_ACTIVATE):
-	@echo "Setting up development virtual env in .venv"
-	python -m venv .venv
-	. $(VENV_BIN_ACTIVATE); \
-	python -m pip install ruff
 
 .PHONY: clean install test deploy
