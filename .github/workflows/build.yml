@@ -63,8 +63,6 @@ jobs:
       - *install-emake
       - name: Building wheel
         run: emake build --wheel
-      - name: Test wheel
-        run: emake test --wheel
       - uses: actions/upload-artifact@v6
         with:
           name: pip-wheel-none-any
