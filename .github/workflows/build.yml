@@ -40,7 +40,6 @@ jobs:
     name: Build sdist
     needs: &build-needs
       - lint
-      - test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the Git repository
@@ -93,7 +92,7 @@ jobs:
           - musl
         exclude:
           - arch: i686 # segfaults currently
-            python: 3.14
+            python: "3.14"
             libc: glibc
     steps:
       - name: Checkout the Git repository
