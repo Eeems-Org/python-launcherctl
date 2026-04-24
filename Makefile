@@ -15,11 +15,8 @@ pip install --force-reinstall /tmp/launcherctl-${VERSION}-py3-none-any.whl
 endef
 export SCRIPT
 
-dist/launcherctl-${VERSION}.tar.gz: $(shell find launcherctl -type f)
-	python -m build --sdist
-
 dist/launcherctl-${VERSION}-py3-none-any.whl: $(shell find launcherctl -type f)
-	python -m build --wheel
+	emake build --wheel
 
 clean:
 	git clean --force -dX
