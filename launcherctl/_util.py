@@ -1,13 +1,13 @@
 import subprocess
 
 
-def LauncherCtlException(Exception):
+class LauncherCtlException(Exception):
     pass
 
 
-def launcherctl(*args) -> str | None:
+def launcherctl(*args: str) -> str:
     try:
-        return subprocess.check_output(["/opt/bin/launcherctl"] + list(args))
+        return subprocess.check_output(["/opt/bin/launcherctl", *args], text=True)
+
     except subprocess.CalledProcessError as e:
-        stdout = e.output.decode("utf-8")
-        raise LauncherCtlException(stdout) from e
+        raise LauncherCtlException(f"{e.stdout}\n{e.stderr}") from e  # pyright: ignore[reportAny]

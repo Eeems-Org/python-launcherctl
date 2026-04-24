@@ -2,8 +2,8 @@ from ._util import launcherctl
 
 
 class App:
-    def __init__(self, name: str):
-        self.name = name
+    def __init__(self, name: str) -> None:
+        self.name: str = name
 
     @property
     def is_running(self) -> bool:
@@ -14,21 +14,21 @@ class App:
         return self.name in api.paused.keys()
 
     def start(self) -> None:
-        launcherctl("start-app", self.name)
+        _ = launcherctl("start-app", self.name)
 
     def stop(self) -> None:
-        launcherctl("stop-app", self.name)
+        _ = launcherctl("stop-app", self.name)
 
     def pause(self) -> None:
-        launcherctl("pause-app", self.name)
+        _ = launcherctl("pause-app", self.name)
 
     def resume(self) -> None:
-        launcherctl("resume-app", self.name)
+        _ = launcherctl("resume-app", self.name)
 
 
 class API:
     def keys(self) -> list[str]:
-        return [x.decode("utf-8") for x in launcherctl("list-apps").splitlines()]
+        return [x for x in launcherctl("list-apps").splitlines()]
 
     def __contains__(self, key: str) -> bool:
         return key in self.keys()
@@ -40,21 +40,16 @@ class API:
         return App(key)
 
     @property
-    def running(self) -> dict[App]:
+    def running(self) -> dict[str, App]:
         return {
             x: App(x)
-            for x in [
-                x.decode("utf-8") for x in launcherctl("list-running-apps").splitlines()
-            ]
+            for x in [x for x in launcherctl("list-running-apps").splitlines()]
         }
 
     @property
-    def paused(self) -> dict[App]:
+    def paused(self) -> dict[str, App]:
         return {
-            x: App(x)
-            for x in [
-                x.decode("utf-8") for x in launcherctl("list-paused-apps").splitlines()
-            ]
+            x: App(x) for x in [x for x in launcherctl("list-paused-apps").splitlines()]
         }
 
 

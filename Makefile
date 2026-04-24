@@ -46,20 +46,4 @@ $(VENV_BIN_ACTIVATE):
 	. $(VENV_BIN_ACTIVATE); \
 	python -m pip install ruff
 
-lint: $(VENV_BIN_ACTIVATE)
-	. $(VENV_BIN_ACTIVATE); \
-	python -m ruff check
-
-lint-fix: $(VENV_BIN_ACTIVATE)
-	. $(VENV_BIN_ACTIVATE); \
-	python -m ruff check
-
-format: $(VENV_BIN_ACTIVATE)
-	. $(VENV_BIN_ACTIVATE); \
-	python -m ruff format --diff
-
-format-fix: $(VENV_BIN_ACTIVATE)
-	. $(VENV_BIN_ACTIVATE); \
-	python -m ruff format
-
-.PHONY: clean install test deploy lint lint-fix format format-fix
+.PHONY: clean install test deploy
