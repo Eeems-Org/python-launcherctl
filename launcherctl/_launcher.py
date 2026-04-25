@@ -1,30 +1,28 @@
 import subprocess
+from collections.abc import Callable
 
-from typing import Callable
-
-from ._app import App
 from ._util import launcherctl
 
 
 class Launcher:
-    def __init__(self, name: str):
-        self.name = name
+    def __init__(self, name: str) -> None:
+        self.name: str = name
 
-    def logs(self, onlogline: Callable[[str], None] = None) -> list[str] | None:
-        pass
+    def logs(self, _onlogline: Callable[[str], None] | None = None) -> list[str] | None:
+        raise NotImplementedError()
 
-    def start(self):
-        launcherctl("start-launcher", self.name)
+    def start(self) -> None:
+        _ = launcherctl("start-launcher", self.name)
 
-    def stop(self):
-        launcherctl("stop-launcher", self.name)
+    def stop(self) -> None:
+        _ = launcherctl("stop-launcher", self.name)
 
-    def enable(self, start: bool = False):
+    def enable(self, start: bool = False) -> None:
         if start:
-            launcherctl("switch-launcher", "--start", self.name)
+            _ = launcherctl("switch-launcher", "--start", self.name)
 
         else:
-            launcherctl("switch-launcher", self.name)
+            _ = launcherctl("switch-launcher", self.name)
 
     @property
     def is_current(self) -> bool:
@@ -50,23 +48,23 @@ class Launcher:
 
 class API:
     def keys(self) -> list[str]:
-        return [x.decode("utf-8") for x in launcherctl("list-launchers").splitlines()]
+        return launcherctl("list-launchers").splitlines()
 
     def __contains__(self, key: str) -> bool:
         return key in self.keys()
 
-    def __getitem__(self, key: str) -> App:
+    def __getitem__(self, key: str) -> Launcher:
         if key not in self:
             raise KeyError()
 
         return Launcher(key)
 
     @property
-    def current(self):
-        return Launcher(launcherctl("status").splitlines()[0][14:-4].decode("utf-8"))
+    def current(self) -> Launcher:
+        return Launcher(launcherctl("status").splitlines()[0][14:-4])
 
-    def switch(launcher: Launcher | str, start: bool = False):
-        if not isinstance(Launcher, launcher):
+    def switch(self, launcher: Launcher | str, start: bool = False) -> None:
+        if not isinstance(launcher, Launcher):
             launcher = Launcher(launcher)
 
         launcher.enable(start)
